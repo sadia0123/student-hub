@@ -1,0 +1,388 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Expenses - Student Hub
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+        <h1>
+            💰 Expenses
+        </h1>
+
+        <p>
+            Track your monthly spending
+        </p>
+
+    </div>
+
+
+
+    <!-- SUMMARY -->
+
+    <div class="grid">
+
+
+        <div class="card">
+
+            <h3>
+                Monthly Expense
+            </h3>
+
+            <h1>
+                ৳ {{ monthly_expense }}
+            </h1>
+
+            <p class="muted">
+                Spent this month
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                Monthly Budget
+            </h3>
+
+            <h1>
+                ৳ {{ monthly_budget }}
+            </h1>
+
+            <p class="muted">
+                Your budget
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                Remaining
+            </h3>
+
+            <h1>
+                ৳ {{ remaining_budget }}
+            </h1>
+
+            <p class="muted">
+                Budget remaining
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <br>
+
+
+
+    <!-- ADD EXPENSE -->
+
+    <div class="card">
+
+        <h2>
+            ➕ Add Expense
+        </h2>
+
+        <br>
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            <input
+                type="hidden"
+                name="action"
+                value="add"
+            >
+
+
+            <label>
+                Amount
+            </label>
+
+            <input
+                type="number"
+                name="amount"
+                step="0.01"
+                placeholder="Enter amount"
+                required
+            >
+
+            <br><br>
+
+
+            <label>
+                Category
+            </label>
+
+            <select
+                name="category"
+                required
+            >
+
+                <option value="">
+                    Select Category
+                </option>
+
+                {% for category in categories %}
+
+                    <option value="{{ category }}">
+                        {{ category }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <br><br>
+
+
+            <label>
+                Description
+            </label>
+
+            <textarea
+                name="description"
+                placeholder="What did you spend on?"
+                rows="3"
+            ></textarea>
+
+
+            <br><br>
+
+
+            <label>
+                Date
+            </label>
+
+            <input
+                type="date"
+                name="date"
+                value="{{ today|date:'Y-m-d' }}"
+                required
+            >
+
+
+            <br><br>
+
+
+            <button type="submit">
+                Add Expense
+            </button>
+
+        </form>
+
+    </div>
+
+
+
+    <br>
+
+
+
+    <!-- SET BUDGET -->
+
+    <div class="card">
+
+        <h2>
+            💳 Set Monthly Budget
+        </h2>
+
+        <br>
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            <input
+                type="hidden"
+                name="action"
+                value="budget"
+            >
+
+
+            <label>
+                Monthly Budget
+            </label>
+
+
+            <input
+                type="number"
+                name="budget_amount"
+                step="0.01"
+                placeholder="Enter monthly budget"
+                value="{{ monthly_budget }}"
+                required
+            >
+
+
+            <br><br>
+
+
+            <button type="submit">
+                Save Budget
+            </button>
+
+        </form>
+
+    </div>
+
+
+
+    <br>
+
+
+
+    <!-- CATEGORY SUMMARY -->
+
+    <div class="card">
+
+        <h2>
+            📊 Category Summary
+        </h2>
+
+        <br>
+
+
+        {% for item in category_totals %}
+
+            <p>
+
+                <strong>
+                    {{ item.category }}
+                </strong>
+
+                :
+
+                ৳ {{ item.total }}
+
+            </p>
+
+        {% empty %}
+
+            <p class="muted">
+                No expenses this month.
+            </p>
+
+        {% endfor %}
+
+    </div>
+
+
+
+    <br>
+
+
+
+    <!-- EXPENSE LIST -->
+
+    <div class="list">
+
+
+        {% for expense in expenses %}
+
+
+            <div class="list-item">
+
+
+                <h2>
+                    ৳ {{ expense.amount }}
+                </h2>
+
+
+                <p>
+                    🏷 {{ expense.category }}
+                </p>
+
+
+                <p class="muted">
+                    📅 {{ expense.date }}
+                </p>
+
+
+                {% if expense.description %}
+
+                    <p>
+                        {{ expense.description }}
+                    </p>
+
+                {% endif %}
+
+
+                <br>
+
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+
+                    <input
+                        type="hidden"
+                        name="action"
+                        value="delete"
+                    >
+
+
+                    <input
+                        type="hidden"
+                        name="expense_id"
+                        value="{{ expense.id }}"
+                    >
+
+
+                    <button type="submit">
+                        🗑 Delete
+                    </button>
+
+                </form>
+
+
+            </div>
+
+
+        {% empty %}
+
+
+            <div class="card">
+
+                <h2>
+                    No expenses yet 💰
+                </h2>
+
+                <p class="muted">
+                    Add your first expense above.
+                </p>
+
+            </div>
+
+
+        {% endfor %}
+
+
+    </div>
+
+
+</div>
+
+{% endblock %}

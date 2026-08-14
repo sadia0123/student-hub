@@ -1,0 +1,380 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home - Student Hub
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+
+
+    <!-- Welcome -->
+
+    <div class="page-header">
+
+        <h1>
+            Welcome back, {{ request.user.username }} 👋
+        </h1>
+
+        <p>
+            Here's your Student Hub overview.
+        </p>
+
+    </div>
+
+
+    <!-- Main Dashboard Cards -->
+
+    <div class="grid">
+
+
+        <!-- Subjects -->
+
+        <a
+            href="/api/dashboard/subjects/"
+            class="card"
+            style="text-decoration: none; color: inherit;"
+        >
+
+            <div style="font-size: 32px;">
+                📚
+            </div>
+
+            <h2 style="margin-top: 12px;">
+                Subjects
+            </h2>
+
+            <p
+                style="
+                    font-size: 28px;
+                    font-weight: bold;
+                    margin-top: 8px;
+                "
+            >
+                {{ subject_count }}
+            </p>
+
+            <p class="muted">
+                Your subjects
+            </p>
+
+        </a>
+
+
+
+        <!-- Exams -->
+
+        <a
+            href="/api/dashboard/exams/"
+            class="card"
+            style="text-decoration: none; color: inherit;"
+        >
+
+            <div style="font-size: 32px;">
+                📝
+            </div>
+
+            <h2 style="margin-top: 12px;">
+                Exams
+            </h2>
+
+            <p
+                style="
+                    font-size: 28px;
+                    font-weight: bold;
+                    margin-top: 8px;
+                "
+            >
+                {{ upcoming_exam_count }}
+            </p>
+
+            <p class="muted">
+                Upcoming exams
+            </p>
+
+        </a>
+
+
+
+        <!-- Tasks -->
+
+        <a
+            href="/api/dashboard/tasks/"
+            class="card"
+            style="text-decoration: none; color: inherit;"
+        >
+
+            <div style="font-size: 32px;">
+                ✅
+            </div>
+
+            <h2 style="margin-top: 12px;">
+                Tasks
+            </h2>
+
+            <p
+                style="
+                    font-size: 28px;
+                    font-weight: bold;
+                    margin-top: 8px;
+                "
+            >
+                {{ pending_task_count }}
+            </p>
+
+            <p class="muted">
+                Pending tasks
+            </p>
+
+        </a>
+
+
+
+        <!-- Expenses -->
+
+        <a
+            href="/api/dashboard/expenses/"
+            class="card"
+            style="text-decoration: none; color: inherit;"
+        >
+
+            <div style="font-size: 32px;">
+                💰
+            </div>
+
+            <h2 style="margin-top: 12px;">
+                Expenses
+            </h2>
+
+            <p
+                style="
+                    font-size: 28px;
+                    font-weight: bold;
+                    margin-top: 8px;
+                "
+            >
+                ৳{{ monthly_expense }}
+            </p>
+
+            <p class="muted">
+                Spent this month
+            </p>
+
+        </a>
+
+
+
+        <!-- Notifications -->
+
+        <a
+            href="/api/dashboard/notifications/"
+            class="card"
+            style="text-decoration: none; color: inherit;"
+        >
+
+            <div style="font-size: 32px;">
+                🔔
+            </div>
+
+            <h2 style="margin-top: 12px;">
+                Notifications
+            </h2>
+
+            <p
+                style="
+                    font-size: 28px;
+                    font-weight: bold;
+                    margin-top: 8px;
+                "
+            >
+                {{ unread_notification_count }}
+            </p>
+
+            <p class="muted">
+                Unread notifications
+            </p>
+
+        </a>
+
+
+
+        <!-- Budget -->
+
+        <div class="card">
+
+            <div style="font-size: 32px;">
+                💳
+            </div>
+
+            <h2 style="margin-top: 12px;">
+                Budget
+            </h2>
+
+            <p
+                style="
+                    font-size: 28px;
+                    font-weight: bold;
+                    margin-top: 8px;
+                "
+            >
+                ৳{{ remaining_budget }}
+            </p>
+
+            <p class="muted">
+                Remaining this month
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Next Exam -->
+
+    <div
+        class="card"
+        style="margin-top: 25px;"
+    >
+
+        <h2>
+            📅 Next Exam
+        </h2>
+
+        {% if next_exam %}
+
+            <div style="margin-top: 15px;">
+
+                <h3>
+                    {{ next_exam.subject.name }}
+                </h3>
+
+                <p class="muted">
+                    📅 {{ next_exam.exam_date }}
+                </p>
+
+                <p class="muted">
+                    🕐 {{ next_exam.exam_time }}
+                </p>
+
+                {% if next_exam.room %}
+
+                    <p class="muted">
+                        🏫 Room {{ next_exam.room }}
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+        {% else %}
+
+            <p
+                class="muted"
+                style="margin-top: 15px;"
+            >
+                No upcoming exams.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+
+    <!-- Next Task -->
+
+    <div
+        class="card"
+        style="margin-top: 20px;"
+    >
+
+        <h2>
+            ✅ Next Task
+        </h2>
+
+        {% if next_task %}
+
+            <div style="margin-top: 15px;">
+
+                <h3>
+                    {{ next_task.title }}
+                </h3>
+
+                <p class="muted">
+                    📚 {{ next_task.subject.name }}
+                </p>
+
+                {% if next_task.deadline %}
+
+                    <p class="muted">
+                        ⏰ Deadline:
+                        {{ next_task.deadline }}
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+        {% else %}
+
+            <p
+                class="muted"
+                style="margin-top: 15px;"
+            >
+                No pending tasks. 🎉
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+
+    <!-- Latest Notification -->
+
+    <div
+        class="card"
+        style="margin-top: 20px;"
+    >
+
+        <h2>
+            🔔 Latest Notification
+        </h2>
+
+        {% if latest_notification %}
+
+            <div style="margin-top: 15px;">
+
+                <p>
+                    {{ latest_notification.message }}
+                </p>
+
+                <p class="muted"
+                   style="margin-top: 8px;">
+
+                    {{ latest_notification.created_at }}
+
+                </p>
+
+            </div>
+
+        {% else %}
+
+            <p
+                class="muted"
+                style="margin-top: 15px;"
+            >
+                No new notifications.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+</div>
+
+{% endblock %}

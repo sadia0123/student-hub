@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>My Subjects</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 25px;
+        }
+
+        .subjects {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(220px, 1fr));
+
+            gap: 20px;
+        }
+
+        .subject-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+
+            box-shadow:
+                0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .subject-card h2 {
+            margin-bottom: 10px;
+        }
+
+        .subject-card p {
+            color: #666;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 25px;
+
+            text-decoration: none;
+            color: #4f46e5;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <a href="/api/dashboard/home/" class="back">
+        ← Back to Home
+    </a>
+
+    <h1>📚 My Subjects</h1>
+
+    <div class="subjects">
+
+        {% for subject in subjects %}
+
+            <div class="subject-card">
+
+                <h2>
+                    {{ subject.name }}
+                </h2>
+
+                {% if subject.code %}
+                    <p>
+                        Code: {{ subject.code }}
+                    </p>
+                {% endif %}
+
+                {% if subject.teacher %}
+                    <p>
+                        Teacher: {{ subject.teacher }}
+                    </p>
+                {% endif %}
+
+            </div>
+
+        {% empty %}
+
+            <p>
+                You haven't added any subjects yet.
+            </p>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

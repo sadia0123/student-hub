@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Notifications - Student Hub
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+
+    <div class="page-header">
+
+        <h1>🔔 Notifications</h1>
+
+        <p>
+            Your latest notifications
+        </p>
+
+    </div>
+
+
+    <!-- MARK ALL READ -->
+
+    <div class="card">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <input
+                type="hidden"
+                name="action"
+                value="read_all"
+            >
+
+            <button type="submit">
+                ✓ Mark All as Read
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <br>
+
+
+    <!-- NOTIFICATIONS -->
+
+    <div class="list">
+
+        {% for notification in notifications %}
+
+            <div
+                class="list-item"
+                {% if not notification.is_read %}
+                    style="border-left: 4px solid #4f46e5;"
+                {% endif %}
+            >
+
+                <h3>
+                    {{ notification.message }}
+                </h3>
+
+
+                <p class="muted">
+
+                    {{ notification.created_at }}
+
+                </p>
+
+
+                {% if not notification.is_read %}
+
+                    <br>
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <input
+                            type="hidden"
+                            name="action"
+                            value="read"
+                        >
+
+                        <input
+                            type="hidden"
+                            name="notification_id"
+                            value="{{ notification.id }}"
+                        >
+
+                        <button type="submit">
+                            ✓ Mark as Read
+                        </button>
+
+                    </form>
+
+                {% else %}
+
+                    <p class="muted">
+                        ✓ Read
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+        {% empty %}
+
+            <div class="card">
+
+                <h2>
+                    No notifications 🔔
+                </h2>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

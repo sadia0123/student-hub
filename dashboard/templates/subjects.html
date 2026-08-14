@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Subjects - Student Hub
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+
+    <div class="page-header">
+
+        <h1>📚 My Subjects</h1>
+
+        <p>
+            Manage your subjects
+        </p>
+
+    </div>
+
+
+    <!-- ADD SUBJECT -->
+
+    <div class="card">
+
+        <h2>Add Subject</h2>
+
+        <br>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <input
+                type="text"
+                name="name"
+                placeholder="Subject name"
+                required
+            >
+
+            <br><br>
+
+            <input
+                type="text"
+                name="code"
+                placeholder="Subject code"
+            >
+
+            <br><br>
+
+            <input
+                type="text"
+                name="teacher"
+                placeholder="Teacher name"
+            >
+
+            <br><br>
+
+            <button type="submit">
+                Add Subject
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <br><br>
+
+
+    <!-- SUBJECT LIST -->
+
+    <div class="grid">
+
+        {% for subject in subjects %}
+
+            <div class="card">
+
+                <h2>
+                    {{ subject.name }}
+                </h2>
+
+                {% if subject.code %}
+
+                    <p class="muted">
+                        Code: {{ subject.code }}
+                    </p>
+
+                {% endif %}
+
+                {% if subject.teacher %}
+
+                    <p class="muted">
+                        Teacher: {{ subject.teacher }}
+                    </p>
+
+                {% endif %}
+
+
+                <br>
+
+                <form
+                    method="POST"
+                    action="{% url 'delete_subject' subject.id %}"
+                >
+
+                    {% csrf_token %}
+
+                    <button type="submit">
+                        🗑 Delete
+                    </button>
+
+                </form>
+
+            </div>
+
+        {% empty %}
+
+            <div class="card">
+
+                <h2>
+                    No subjects yet 📚
+                </h2>
+
+                <p class="muted">
+                    Add your first subject above.
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

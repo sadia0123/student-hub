@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Routine - Student Hub
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+
+    <div class="page-header">
+
+        <h1>🗓️ My Routine</h1>
+
+        <p>
+            Manage your class routine
+        </p>
+
+    </div>
+
+
+    <!-- ADD ROUTINE -->
+
+    <div class="card">
+
+        <h2>Add Routine</h2>
+
+        <br>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <input
+                type="hidden"
+                name="action"
+                value="add"
+            >
+
+
+            <select name="subject" required>
+
+                <option value="">
+                    Select Subject
+                </option>
+
+                {% for subject in subjects %}
+
+                    <option value="{{ subject.id }}">
+                        {{ subject.name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+            <br><br>
+
+
+            <select name="day" required>
+
+                <option value="">
+                    Select Day
+                </option>
+
+                {% for day in days %}
+
+                    <option value="{{ day }}">
+                        {{ day }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+            <br><br>
+
+
+            <label>
+                Start Time
+            </label>
+
+            <br>
+
+            <input
+                type="time"
+                name="start_time"
+                required
+            >
+
+            <br><br>
+
+
+            <label>
+                End Time
+            </label>
+
+            <br>
+
+            <input
+                type="time"
+                name="end_time"
+                required
+            >
+
+            <br><br>
+
+
+            <input
+                type="text"
+                name="room"
+                placeholder="Room"
+            >
+
+            <br><br>
+
+
+            <button type="submit">
+                Add Routine
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <br><br>
+
+
+    <!-- ROUTINES -->
+
+    <div class="list">
+
+        {% for routine in routines %}
+
+            <div class="list-item">
+
+                <h2>
+                    {{ routine.subject.name }}
+                </h2>
+
+                <p>
+                    📅 {{ routine.day }}
+                </p>
+
+                <p>
+                    ⏰ {{ routine.start_time }}
+                    -
+                    {{ routine.end_time }}
+                </p>
+
+
+                {% if routine.room %}
+
+                    <p class="muted">
+                        🚪 Room: {{ routine.room }}
+                    </p>
+
+                {% endif %}
+
+
+                <br>
+
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    <input
+                        type="hidden"
+                        name="action"
+                        value="delete"
+                    >
+
+                    <input
+                        type="hidden"
+                        name="routine_id"
+                        value="{{ routine.id }}"
+                    >
+
+                    <button type="submit">
+                        🗑 Delete
+                    </button>
+
+                </form>
+
+            </div>
+
+        {% empty %}
+
+            <div class="card">
+
+                <h2>
+                    No routine yet 🗓️
+                </h2>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

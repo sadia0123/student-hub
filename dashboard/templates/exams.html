@@ -1,0 +1,165 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Exams - Student Hub
+{% endblock %}
+
+{% block content %}
+
+<div class="exam-page">
+
+    <h1 class="page-title">
+        📝 My Exams
+    </h1>
+
+    <p class="page-subtitle">
+        Manage your upcoming exams
+    </p>
+
+
+    <div class="exam-form-card">
+
+        <h2>
+            Add Exam
+        </h2>
+
+        <form method="POST" class="exam-form">
+
+            {% csrf_token %}
+
+            <label>
+                Subject
+            </label>
+
+            <select name="subject" required>
+
+                <option value="">
+                    Select Subject
+                </option>
+
+                {% for subject in subjects %}
+
+                    <option value="{{ subject.id }}">
+                        {{ subject.name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <label>
+                Exam Date
+            </label>
+
+            <input
+                type="date"
+                name="exam_date"
+                required
+            >
+
+
+            <label>
+                Exam Time
+            </label>
+
+            <input
+                type="time"
+                name="exam_time"
+                required
+            >
+
+
+            <label>
+                Room
+            </label>
+
+            <input
+                type="text"
+                name="room"
+                placeholder="Room number"
+            >
+
+
+            <label>
+                Note
+            </label>
+
+            <textarea
+                name="note"
+                placeholder="Any additional note..."
+            ></textarea>
+
+
+            <button
+                type="submit"
+                class="exam-btn"
+            >
+                Add Exam
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <div class="exam-list">
+
+        {% for exam in exams %}
+
+            <div class="exam-card">
+
+                <h3>
+                    📝 {{ exam.subject.name }}
+                </h3>
+
+                <p class="exam-info">
+                    📅 {{ exam.exam_date }}
+                </p>
+
+                <p class="exam-info">
+                    ⏰ {{ exam.exam_time }}
+                </p>
+
+                {% if exam.room %}
+
+                    <p class="exam-info">
+                        🏫 Room: {{ exam.room }}
+                    </p>
+
+                {% endif %}
+
+                {% if exam.note %}
+
+                    <p class="exam-info">
+                        📌 {{ exam.note }}
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+        {% empty %}
+
+            <div class="no-exams">
+
+                <h3>
+                    No exams yet 📝
+                </h3>
+
+                <p>
+                    Add your first exam above.
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
