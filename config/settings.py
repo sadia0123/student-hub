@@ -26,13 +26,13 @@ SECRET_KEY = 'django-insecure-63+_&e=0a7j8+&8o7sinhcoy=q0##8v)o%176jd!q@=p1#*j3h
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "student-hub-3-lvjk.onrender.com",
+    "student-hub-6-lvjk.onrender.com",
     "localhost",
     "127.0.0.1",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://student-hub-3-lvjk.onrender.com",
+    "https://student-hub-6-lvjk.onrender.com",
 ]
 
 # Application definition
