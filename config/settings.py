@@ -25,12 +25,19 @@ SECRET_KEY = 'django-insecure-63+_&e=0a7j8+&8o7sinhcoy=q0##8v)o%176jd!q@=p1#*j3h
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [
+    "student-hub-2-6121.onrender.com",
+    "localhost",
+    "127.0.0.1",
+]
+CSRF_TRUSTED_ORIGINS = [
+    "https://student-hub-2-6121.onrender.com",
+]
 
 # Application definition
 
 INSTALLED_APPS = [
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
